@@ -1,10 +1,11 @@
 from pydantic import BaseModel, Field, validator
-from typing import  Generic, List, Optional, TypeVar
+from typing import Generic, List, Optional, TypeVar
 from datetime import datetime
 from fastapi import FastAPI
 from enum import Enum
 from uuid import UUID, uuid4
 from maintenance import Maintenance
+
 
 class Bicycle(BaseModel):
     id: UUID = uuid4()

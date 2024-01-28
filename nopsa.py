@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, validator
-from typing import  Generic, List, Optional, TypeVar
+from typing import Generic, List, Optional, TypeVar
 from datetime import datetime
 from fastapi import FastAPI
 from enum import Enum
@@ -10,7 +10,6 @@ from bicycle import Bicycle
 from bicyclegarage import BicycleGarage
 
 app = FastAPI()
-
 
 
 bikes = {
@@ -24,7 +23,7 @@ bikes = {
                 description="Ketju löysällä",
                 maintenance_status=MaintenanceStatus.done,
                 maintenance_type=MaintenanceType.service,
-                price=0.0,
+                price=10.0,
                 done_at=None,
             ),
             Maintenance(
@@ -35,7 +34,7 @@ bikes = {
                 price=100.0,
                 done_at=None,
             ),
-        ]
+        ],
     ),
     1: Bicycle(
         name="Radon R1",
@@ -44,34 +43,36 @@ bikes = {
     2: Bicycle(
         name="Rose Dr. Z",
         description="XC täysjousto",
-        created_at=datetime.now(),
-        updated_at=datetime.now(),
-        sold_at=None,
     ),
     3: Bicycle(
         name="Rose The Tusker",
         description="Fatbike",
-        created_at=datetime.now(),
-        updated_at=datetime.now(),
-        sold_at=None,
     ),
 }
 
-bike = Bicycle(id=uuid4(), name="Otto Kynast", description="Länsisaksalainen putkirunkopyörä")
+bike = Bicycle(name="Otto Kynast", description="Länsisaksalainen putkirunkopyörä")
 
-garage = BicycleGarage(id=uuid4(), name="Alakerta", description="Fillarikellari", bicycles=bikes.values())
+garage = BicycleGarage(name="Alakerta", description="Fillarikellari", bicycles=bikes.values())
 garage.addfillari(bike)
 
-bike.addmaintenance(Maintenance(name="Ketjun kiristys", description="Ketju löysällä").adddone().addprice(30.0).addtype(MaintenanceType.service))
+bike.addmaintenance(
+    Maintenance(name="Ketjun kiristys", description="Ketju löysällä")
+    .adddone()
+    .addprice(30.0)
+    .addtype(MaintenanceType.service)
+)
+
 
 @app.get("/")
 async def read_root():
     return {"garage": garage}
 
+
 @app.post("/fillari/")
 async def create_fillari(fillari: Bicycle):
     garage.addfillari(fillari)
     return fillari
+
 
 @app.get("/fillari/{fillari_id}")
 async def read_fillari(fillari_id: UUID):

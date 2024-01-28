@@ -1,18 +1,21 @@
 from pydantic import BaseModel, Field, validator
-from typing import  Generic, List, Optional, TypeVar
+from typing import Generic, List, Optional, TypeVar
 from datetime import datetime
 from enum import Enum
 from uuid import UUID, uuid4
+
 
 class MaintenanceStatus(str, Enum):
     done = "done"
     pending = "pending"
     started = "started"
 
+
 class MaintenanceType(str, Enum):
     repair = "repair"
     service = "service"
     warranty = "warranty"
+
 
 class Maintenance(BaseModel):
     id: UUID = uuid4()
@@ -35,12 +38,12 @@ class Maintenance(BaseModel):
         self.done_at = datetime.now()
         self.maintenance_status = MaintenanceStatus.done
         return self
-    
+
     def addprice(self, price: float):
         self.updated_at = datetime.now()
         self.price = price
         return self
-    
+
     def addtype(self, maintenance_type: MaintenanceType):
         self.updated_at = datetime.now()
         self.maintenance_type = maintenance_type
