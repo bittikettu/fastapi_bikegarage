@@ -1,11 +1,7 @@
-from pydantic import BaseModel, Field, validator
-from typing import Generic, List, Optional, TypeVar
-from datetime import datetime
-from fastapi import FastAPI
-from enum import Enum
+from pydantic import BaseModel
+from typing import List
 from uuid import UUID, uuid4
 from bicycle import Bicycle
-
 
 class BicycleGarage(BaseModel):
     id: UUID = uuid4()
@@ -16,4 +12,8 @@ class BicycleGarage(BaseModel):
     def addfillari(self, bicycle: Bicycle):
         if self.bicycles is None:
             self.bicycles = []
-        self.bicycles.append(bicycle)
+        if bicycle not in self.bicycles:
+            self.bicycles.append(bicycle)
+            return bicycle
+        else:  
+            return None

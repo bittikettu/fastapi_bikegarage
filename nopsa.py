@@ -24,7 +24,7 @@ bikes = {
                 maintenance_status=MaintenanceStatus.done,
                 maintenance_type=MaintenanceType.service,
                 price=10.0,
-                done_at=None,
+                done_at=datetime.now(),
             ),
             Maintenance(
                 name="Uusi hihna",
@@ -70,7 +70,8 @@ async def read_root():
 
 @app.post("/fillari/")
 async def create_fillari(fillari: Bicycle):
-    garage.addfillari(fillari)
+    if garage.addfillari(fillari) is None:
+        return {"error": "Fillari on jo tallennettu"}
     return fillari
 
 
