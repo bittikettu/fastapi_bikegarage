@@ -9,5 +9,7 @@ Consists of a garage, garage has multiple bikes and bikes may have maintenances.
 pip install fastapi[all]
 uvicorn nopsa:app --host 0.0.0.0 --reload
 ```
+
 localhost:8000/docs
+
 localhost:8000/redoc
